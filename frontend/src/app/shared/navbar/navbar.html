@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-md bg-body-tertiary border-bottom mb-3">
+  <div class="container">
+    <a class="navbar-brand fw-bold" routerLink="/books">
+      <i class="fa-solid fa-book-open me-2"></i>MyBooks
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNav"
+      aria-controls="mainNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        @if (auth.isLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/books" routerLinkActive="active">
+              <i class="fa-solid fa-list me-1"></i>Books
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/quotes" routerLinkActive="active">
+              <i class="fa-solid fa-quote-left me-1"></i>My Quotes
+            </a>
+          </li>
+        }
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm"
+          (click)="theme.toggle()"
+          [attr.aria-label]="'Switch to ' + (theme.theme() === 'light' ? 'dark' : 'light') + ' mode'"
+        >
+          @if (theme.theme() === 'light') {
+            <i class="fa-solid fa-moon"></i>
+          } @else {
+            <i class="fa-solid fa-sun"></i>
+          }
+        </button>
+
+        @if (auth.isLoggedIn()) {
+          <span class="text-body-secondary small d-none d-sm-inline">
+            <i class="fa-solid fa-user me-1"></i>{{ auth.currentUsername() }}
+          </span>
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="logout()">
+            <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
+          </button>
+        } @else {
+          <a class="btn btn-primary btn-sm" routerLink="/login">Login</a>
+          <a class="btn btn-outline-primary btn-sm" routerLink="/register">Register</a>
+        }
+      </div>
+    </div>
+  </div>
+</nav>

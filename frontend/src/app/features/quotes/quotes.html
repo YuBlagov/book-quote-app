@@ -1,0 +1,61 @@
+<h2 class="mb-4"><i class="fa-solid fa-quote-left me-2"></i>My Quotes</h2>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">{{ editingId() === null ? 'Add a quote' : 'Edit quote' }}</h5>
+    <form (ngSubmit)="save()" #form="ngForm" class="row g-2 align-items-end">
+      <div class="col-12 col-md-6">
+        <label class="form-label" for="text">Quote</label>
+        <input id="text" name="text" class="form-control" [(ngModel)]="draft.text" required />
+      </div>
+      <div class="col-12 col-md-4">
+        <label class="form-label" for="author">Author</label>
+        <input id="author" name="author" class="form-control" [(ngModel)]="draft.author" required />
+      </div>
+      <div class="col-12 col-md-2 d-flex gap-2">
+        <button class="btn btn-primary flex-grow-1" type="submit" [disabled]="!form.valid">
+          {{ editingId() === null ? 'Add' : 'Save' }}
+        </button>
+        @if (editingId() !== null) {
+          <button class="btn btn-outline-secondary" type="button" (click)="cancelEdit()">
+            Cancel
+          </button>
+        }
+      </div>
+    </form>
+  </div>
+</div>
+
+@if (isLoading()) {
+  <div class="text-center py-5">
+    <span class="spinner-border"></span>
+  </div>
+} @else if (errorMessage()) {
+  <div class="alert alert-danger">{{ errorMessage() }}</div>
+} @else if (quotes().length === 0) {
+  <p class="text-body-secondary">No favorite quotes yet — add up to 5 above.</p>
+} @else {
+  <div class="row g-3">
+    @for (quote of quotes(); track quote.id) {
+      <div class="col-12 col-md-6">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <p class="card-text flex-grow-1">
+              <i class="fa-solid fa-quote-left me-1 text-body-secondary"></i>
+              {{ quote.text }}
+            </p>
+            <p class="text-end fw-semibold mb-3">&mdash; {{ quote.author }}</p>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-primary" (click)="startEdit(quote)">
+                <i class="fa-solid fa-pen"></i> Edit
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="remove(quote)">
+                <i class="fa-solid fa-trash"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

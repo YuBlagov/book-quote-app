@@ -1,0 +1,41 @@
+<div class="form-page mx-auto">
+  <h2 class="mb-4">
+    <i class="fa-solid" [class.fa-plus]="!isEditMode()" [class.fa-pen]="isEditMode()"></i>
+    {{ isEditMode() ? 'Edit book' : 'Add new book' }}
+  </h2>
+
+  <form (ngSubmit)="submit()" #form="ngForm">
+    <div class="mb-3">
+      <label class="form-label" for="title">Title</label>
+      <input id="title" name="title" class="form-control" [(ngModel)]="model.title" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="author">Author</label>
+      <input id="author" name="author" class="form-control" [(ngModel)]="model.author" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="publishedDate">Published date</label>
+      <input
+        id="publishedDate"
+        name="publishedDate"
+        type="date"
+        class="form-control"
+        [(ngModel)]="model.publishedDate"
+        required
+      />
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger py-2">{{ errorMessage() }}</div>
+    }
+
+    <button class="btn btn-primary w-100" type="submit" [disabled]="!form.valid || isSubmitting()">
+      @if (isSubmitting()) {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+      }
+      Save
+    </button>
+  </form>
+</div>

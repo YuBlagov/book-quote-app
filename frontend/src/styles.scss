@@ -1,0 +1,14 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+// Small helper so form pages don't stretch too wide on desktop
+// while still using full width on phones/tablets (Bootstrap grid handles the rest).
+.form-page {
+  max-width: 640px;
+}

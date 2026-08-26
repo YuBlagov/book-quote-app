@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h2 class="mb-0"><i class="fa-solid fa-book-open me-2"></i>Books</h2>
+  <a class="btn btn-success" routerLink="/books/new">
+    <i class="fa-solid fa-plus me-1"></i>Add new book
+  </a>
+</div>
+
+@if (isLoading()) {
+  <div class="text-center py-5">
+    <span class="spinner-border"></span>
+  </div>
+} @else if (errorMessage()) {
+  <div class="alert alert-danger">{{ errorMessage() }}</div>
+} @else if (books().length === 0) {
+  <p class="text-body-secondary">No books yet. Add your first one!</p>
+} @else {
+  <!-- Table on md+ screens, stacked cards on small screens: both are Bootstrap-responsive. -->
+  <div class="table-responsive d-none d-md-block">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Published</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of books(); track book.id) {
+          <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.publishedDate | date: 'yyyy-MM-dd' }}</td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/books/edit', book.id]">
+                <i class="fa-solid fa-pen"></i> Edit
+              </a>
+              <button class="btn btn-sm btn-outline-danger" (click)="remove(book)">
+                <i class="fa-solid fa-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-md-none">
+    @for (book of books(); track book.id) {
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title mb-1">{{ book.title }}</h5>
+          <p class="card-text text-body-secondary mb-2">
+            {{ book.author }} &middot; {{ book.publishedDate | date: 'yyyy-MM-dd' }}
+          </p>
+          <a class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/books/edit', book.id]">
+            <i class="fa-solid fa-pen"></i> Edit
+          </a>
+          <button class="btn btn-sm btn-outline-danger" (click)="remove(book)">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}

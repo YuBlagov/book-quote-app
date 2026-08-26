@@ -1,0 +1,17 @@
+# .NET backend
+backend/**/bin/
+backend/**/obj/
+backend/**/*.db
+backend/**/*.db-shm
+backend/**/*.db-wal
+backend/**/.vs/
+backend/**/*.user
+
+# Angular frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.vscode/
+
+# OS / editor
+.DS_Store
