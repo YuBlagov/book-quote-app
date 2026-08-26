@@ -1,6 +1,10 @@
 # Frontend
 
+Angular 20 SPA for the [MyBooks book-quote app](../README.md) — see the root README for the full project overview, API summary, and deployment notes.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.34.
+
+> This app talks to the ASP.NET Core backend in `../backend/BookQuoteApi`. `src/app/core/api-config.ts` currently points `API_BASE_URL` at the **deployed** backend, not `localhost` — see the root README's "Local development" section before running against a local backend.
 
 ## Development server
 
