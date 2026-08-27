@@ -31,9 +31,24 @@ public class AuthController(
         db.Users.Add(user);
         await db.SaveChangesAsync();
 
+        db.Quotes.AddRange(SeedQuotes(user.Id));
+        await db.SaveChangesAsync();
+
         var (token, expiresAt) = tokenService.GenerateToken(user);
         return Ok(new AuthResponse(token, user.Username, expiresAt));
     }
+
+    // New users start out with 5 quotes already on "Mina citat", so the page isn't empty
+    // the first time they open it. They're free to edit, delete, or add more from there —
+    // there's no cap on how many quotes a user can keep.
+    private static List<Quote> SeedQuotes(int userId) =>
+    [
+        new Quote { UserId = userId, Text = "It is our choices, Harry, that show what we truly are, far more than our abilities.", Author = "J.K. Rowling" },
+        new Quote { UserId = userId, Text = "All happy families are alike; each unhappy family is unhappy in its own way.", Author = "Leo Tolstoy" },
+        new Quote { UserId = userId, Text = "So it goes.", Author = "Kurt Vonnegut" },
+        new Quote { UserId = userId, Text = "I am no bird; and no net ensnares me: I am a free human being with an independent will.", Author = "Charlotte Brontë" },
+        new Quote { UserId = userId, Text = "Not all those who wander are lost.", Author = "J.R.R. Tolkien" },
+    ];
 
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
