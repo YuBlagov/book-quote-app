@@ -33,7 +33,7 @@
 } @else if (errorMessage()) {
   <div class="alert alert-danger">{{ errorMessage() }}</div>
 } @else if (quotes().length === 0) {
-  <p class="text-body-secondary">No favorite quotes yet — add up to 5 above.</p>
+  <p class="text-body-secondary">No quotes yet — add one above.</p>
 } @else {
   <div class="row g-3">
     @for (quote of quotes(); track quote.id) {
