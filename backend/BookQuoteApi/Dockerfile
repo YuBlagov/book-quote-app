@@ -17,6 +17,11 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 # SQLite file lives here; Render's free web services have an EPHEMERAL filesystem,
 # so this resets on every deploy/restart/spin-down — see deploy notes.
 ENV ConnectionStrings__Default="Data Source=/app/data/app.db"
+# Render's containers cap inotify instances low enough that the default
+# appsettings.json file watcher (reloadOnChange) crashes the app on boot
+# with "configured user limit (128) on the number of inotify instances
+# has been reached". We don't need hot-reload of config in production.
+ENV DOTNET_hostBuilder__reloadConfigOnChange=false
 
 # Render injects $PORT at runtime and expects the app to listen on it.
 CMD ["sh", "-c", "mkdir -p /app/data && ASPNETCORE_URLS=http://+:$PORT dotnet BookQuoteApi.dll"]
