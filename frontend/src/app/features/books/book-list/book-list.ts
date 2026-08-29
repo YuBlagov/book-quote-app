@@ -28,7 +28,8 @@ export class BookList implements OnInit {
         this.books.set(books);
         this.isLoading.set(false);
       },
-      error: () => {
+      error: (err) => {
+        console.error('Failed to load books', err);
         this.errorMessage.set('Could not load books.');
         this.isLoading.set(false);
       },
@@ -40,7 +41,10 @@ export class BookList implements OnInit {
 
     this.bookService.delete(book.id).subscribe({
       next: () => this.books.set(this.books().filter((b) => b.id !== book.id)),
-      error: () => this.errorMessage.set('Could not delete the book.'),
+      error: (err) => {
+        console.error('Failed to delete book', err);
+        this.errorMessage.set('Could not delete the book.');
+      },
     });
   }
 }

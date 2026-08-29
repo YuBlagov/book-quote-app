@@ -31,9 +31,16 @@ export class BookForm implements OnInit {
       this.isEditMode.set(true);
       this.bookService.getById(this.bookId).subscribe({
         next: (book) => {
-          this.model = { title: book.title, author: book.author, publishedDate: book.publishedDate.slice(0, 10) };
+          this.model = {
+            title: book.title,
+            author: book.author,
+            publishedDate: book.publishedDate ? book.publishedDate.slice(0, 10) : '',
+          };
         },
-        error: () => this.errorMessage.set('Could not load the book.'),
+        error: (err) => {
+          console.error('Failed to load book', err);
+          this.errorMessage.set('Could not load the book.');
+        },
       });
     }
   }
@@ -42,16 +49,21 @@ export class BookForm implements OnInit {
     this.isSubmitting.set(true);
     this.errorMessage.set(null);
 
-    const onError = () => {
+    // publishedDate is optional: the <input type="date"> yields '' when left blank,
+    // which the backend's DateTime? can't parse, so normalize it to null before sending.
+    const payload = { ...this.model, publishedDate: this.model.publishedDate || null };
+
+    const onError = (err: unknown) => {
+      console.error('Failed to save book', err);
       this.isSubmitting.set(false);
       this.errorMessage.set('Could not save the book.');
     };
     const onSuccess = () => this.router.navigate(['/books']);
 
     if (this.isEditMode()) {
-      this.bookService.update(this.bookId!, this.model).subscribe({ next: onSuccess, error: onError });
+      this.bookService.update(this.bookId!, payload).subscribe({ next: onSuccess, error: onError });
     } else {
-      this.bookService.create(this.model).subscribe({ next: onSuccess, error: onError });
+      this.bookService.create(payload).subscribe({ next: onSuccess, error: onError });
     }
   }
 }

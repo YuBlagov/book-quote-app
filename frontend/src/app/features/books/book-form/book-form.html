@@ -16,14 +16,15 @@
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="publishedDate">Published date</label>
+      <label class="form-label" for="publishedDate">
+        Published date <span class="text-body-secondary fw-normal">(optional)</span>
+      </label>
       <input
         id="publishedDate"
         name="publishedDate"
         type="date"
         class="form-control"
         [(ngModel)]="model.publishedDate"
-        required
       />
     </div>
 
