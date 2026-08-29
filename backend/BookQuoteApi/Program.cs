@@ -108,6 +108,13 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AngularClient");
 app.UseAuthentication();
 app.UseAuthorization();
+
+// No controller owns "/" — without this, hitting the bare backend URL (e.g. the one
+// linked from the README) 404s with an empty body, which reads as "the service is
+// down" even when it's perfectly healthy. Gives anyone (a person in a browser, an
+// uptime check) an unauthenticated way to confirm the API is actually up.
+app.MapGet("/", () => Results.Ok(new { status = "ok", service = "BookQuoteApi" }));
+
 app.MapControllers();
 
 app.Run();

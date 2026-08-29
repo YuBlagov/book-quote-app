@@ -5,7 +5,7 @@ Fullstack app for tracking books and personal quotes: ASP.NET Core 9 Web API bac
 ## Live demo
 
 - **Frontend**: https://book-quote-app-1.onrender.com
-- **Backend API**: https://book-quote-app.onrender.com/api
+- **Backend health check**: https://book-quote-app.onrender.com — returns `{"status":"ok",...}` when the API is up. The actual API base the frontend talks to is `/api` (e.g. `/api/books`), which isn't meant to be opened directly in a browser — those routes require a JWT and 401/404 without one.
 
 Both are on Render's free tier — the backend spins down after ~15 min of inactivity, so the first request after a while can take 30–60s to wake it up.
 
